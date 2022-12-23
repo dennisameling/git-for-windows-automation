@@ -175,7 +175,7 @@ jobs:
           . PKGBUILD &&
           for key in "${validpgpkeys[@]}" 57759F748D223F034D8BE870BB3AA74136C569BB
           do
-            gpg --verbose $GPG_OPTIONS--recv-keys --batch --yes --keyserver hkp://keyserver.ubuntu.com "$key" &&
+            gpg --verbose $GPG_OPTIONS --recv-keys --batch --yes --keyserver hkp://keyserver.ubuntu.com "$key" &&
             echo "$key:6:" | gpg --verbose $GPG_OPTIONS --import-ownertrust ||
             exit 1
           done
