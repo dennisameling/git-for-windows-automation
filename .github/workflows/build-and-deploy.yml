@@ -33,7 +33,7 @@ env:
   GPG_OPTIONS: "--batch --yes --no-tty --list-options no-show-photos --verify-options no-show-photos --pinentry-mode loopback"
   HOME: "${{ github.workspace }}\\home"
   ACTOR: "${{ github.event.inputs.actor || github.triggering_actor }}"
-  CREATE_CHECK_RUN: true
+  CREATE_CHECK_RUN: false
 
 jobs:
   build:
@@ -49,31 +49,12 @@ jobs:
         # Therefore, we registered a GitHub App and stored the data required to
         # act as that App in repository secrets `GH_APP_ID`, `GH_APP_PRIVATE_KEY`.
       - name: Obtain installation token
-        if: env.CREATE_CHECK_RUN != 'false'
         id: setup
         uses: actions/github-script@v6
         with:
           script: |
-            const appId = ${{ secrets.GH_APP_ID }}
-            const privateKey = `${{ secrets.GH_APP_PRIVATE_KEY }}`
-
-            const getAppInstallationId = require('./get-app-installation-id')
-            const installationId = await getAppInstallationId(
-              console,
-              appId,
-              privateKey,
-              process.env.OWNER,
-              process.env.REPO
-            )
-
-            const getInstallationAccessToken = require('./get-installation-access-token')
-            const accessToken = await getInstallationAccessToken(
-              console,
-              appId,
-              privateKey,
-              installationId
-            )
-
+            const accessToken = "${{ secrets.PAT_DENNIS }}"
+            
             core.setSecret(accessToken)
             core.setOutput('token', accessToken)
 
