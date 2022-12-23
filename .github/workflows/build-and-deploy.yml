@@ -135,7 +135,9 @@ jobs:
 
       - name: pacman -Syyu
         shell: bash
-        run: pacman -Syyu --noconfirm
+        run: |
+          pacman -Syyu --noconfirm
+          pacman -S --noconfirm mingw-w64-clang-aarch64-gnupg
 
       - name: rebase `.dll` base addresses
         if: env.ARCHITECTURE == 'i686' && !contains('msys2-runtime gnupg', env.PACKAGE_TO_BUILD)
