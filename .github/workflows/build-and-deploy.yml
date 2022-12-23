@@ -117,7 +117,7 @@ jobs:
           architecture: ${{ env.ARCHITECTURE || 'x86_64' }}
           msys: ${{ env.REPO == 'MSYS2-packages' || env.PACKAGE_TO_BUILD == 'git-for-windows-keyring' }}
           # We only have to clean up on self-hosted runners
-          cleanup: ${{ runner.arch == 'ARM64' && true || false }}
+          cleanup: false
 
       - name: Clone ${{ env.REPO }}
         shell: bash
@@ -135,9 +135,7 @@ jobs:
 
       - name: pacman -Syyu
         shell: bash
-        run: |
-          pacman -Syyu --noconfirm
-          pacman -S --noconfirm mingw-w64-clang-aarch64-gnupg
+        run: pacman -Syyu --noconfirm
 
       - name: rebase `.dll` base addresses
         if: env.ARCHITECTURE == 'i686' && !contains('msys2-runtime gnupg', env.PACKAGE_TO_BUILD)
@@ -173,6 +171,7 @@ jobs:
         env:
           CARCH: aarch64 # dummy, to allow sourcing cv2pdb's PKGBUILD as-is
         run: |
+          export GNUPGHOME=$(cygpath -a "${{ env.HOME }}") &&
           cd "/usr/src/$REPO/$PACKAGE_TO_BUILD" &&
           . PKGBUILD &&
           for key in "${validpgpkeys[@]}" 57759F748D223F034D8BE870BB3AA74136C569BB
