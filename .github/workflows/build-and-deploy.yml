@@ -169,7 +169,7 @@ jobs:
       - name: Get GPG key(s)
         shell: bash
         env:
-          CARCH: x86_64 # dummy, to allow sourcing cv2pdb's PKGBUILD as-is
+          CARCH: aarch64 # dummy, to allow sourcing cv2pdb's PKGBUILD as-is
         run: |
           cd "/usr/src/$REPO/$PACKAGE_TO_BUILD" &&
           . PKGBUILD &&
