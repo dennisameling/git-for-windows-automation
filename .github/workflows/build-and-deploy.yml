@@ -136,11 +136,7 @@ jobs:
 
       - name: pacman -Syyu
         shell: bash
-        run: |
-          pacman -Syyu --noconfirm
-          # Temp downgrade due to OpenSSL issue
-          curl https://repo.msys2.org/msys/x86_64/bsdtar-3.5.1-1-x86_64.pkg.tar.zst -O
-          pacman -U
+        run: pacman -Syyu --noconfirm
 
       - name: rebase `.dll` base addresses
         if: env.ARCHITECTURE == 'i686' && !contains('msys2-runtime gnupg', env.PACKAGE_TO_BUILD)
